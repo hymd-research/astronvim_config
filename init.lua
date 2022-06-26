@@ -46,14 +46,65 @@ local config = {
     -- Add plugins, the packer syntax without the "use"
     init = {
       -- You can also add new plugins here as well:
-      -- { "andweeb/presence.nvim" },
-      -- {
-      --   "ray-x/lsp_signature.nvim",
-      --   event = "BufRead",
-      --   config = function()
-      --     require("lsp_signature").setup()
-      --   end,
-      -- },
+      { "andweeb/presence.nvim" },
+      { "mfussenegger/nvim-dap" },
+      {
+        "ray-x/cmp-treesitter",
+        config = function()
+          astronvim.add_user_cmp_source "treesitter"
+        end
+      },
+      {
+        "ray-x/lsp_signature.nvim",
+        event = "BufRead",
+        config = function()
+          require("lsp_signature").setup({
+            bind = true,
+          })
+        end,
+      },
+      {
+        "nvim-telescope/telescope-ui-select.nvim",
+        config = function()
+          require("telescope").load_extension("ui-select")
+        end
+      },
+      {
+        "nvim-telescope/telescope-dap.nvim",
+        config = function()
+          require("telescope").load_extension("dap")
+        end
+      },
+      {
+        "AckslD/nvim-neoclip.lua",
+        requires = {
+          {'nvim-telescope/telescope.nvim'},
+        },
+        config = function()
+          require('neoclip').setup()
+        end,
+      },
+    },
+    ["presence"] = {
+      auto_update         = true,
+      neovim_image_text   = "The One True Text Editor",
+      main_image          = "neovim",
+      client_id           = "793271441293967371",
+      log_level           = nil,
+      debounce_timeout    = 10,
+      enable_line_number  = false,
+      blacklist           = {},
+      buttons             = true,
+      file_assets         = {},
+
+      -- Rich Presence text options
+      editing_text        = "Editing %s",
+      file_explorer_text  = "Browsing %s",
+      git_commit_text     = "Committing changes",
+      plugin_manager_text = "Managing plugins",
+      reading_text        = "Reading %s",
+      workspace_text      = "Working on %s",
+      line_number_text    = "Line %s out of %s",
     },
     -- All other entries override the setup() call for default plugins
     ["null-ls"] = function(config)
@@ -80,11 +131,20 @@ local config = {
       end
       return config -- return final config table
     end,
-    treesitter = {
-      ensure_installed = { "lua" },
+    ["cmp"] = {
+      sources = {
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "treesitter" },
+        { name = "buffer" },
+        { name = "path" },
+      }
     },
     ["nvim-lsp-installer"] = {
       ensure_installed = { "sumneko_lua" },
+    },
+    treesitter = {
+      ensure_installed = { "lua" },
     },
     packer = {
       compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
@@ -97,75 +157,16 @@ local config = {
     vscode_snippet_paths = {},
   },
 
-  -- Modify which-key registration
-  ["which-key"] = {
-    -- Add bindings
-    register_mappings = {
-      -- first key is the mode, n == normal mode
-      n = {
-        -- second key is the prefix, <leader> prefixes
-        ["<leader>"] = {
-          -- which-key registration table for normal mode, leader prefix
-          -- ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
-        },
-      },
-    },
-  },
-
-  -- CMP Source Priorities
-  -- modify here the priorities of default cmp sources
-  -- higher value == higher priority
-  -- The value can also be set to a boolean for disabling default sources:
-  -- false == disabled
-  -- true == 1000
   cmp = {
     source_priority = {
       nvim_lsp = 1000,
-      luasnip = 750,
-      buffer = 500,
-      path = 250,
+      luasnip = 800,
+      treesitter = 600,
+      buffer = 400,
+      path = 200,
     },
   },
 
-  -- Extend LSP configuration
-  lsp = {
-    -- enable servers that you already have installed without lsp-installer
-    servers = {
-      -- "pyright"
-    },
-    -- easily add or disable built in mappings added during LSP attaching
-    mappings = {
-      n = {
-        -- ["<leader>lf"] = false -- disable formatting keymap
-      },
-    },
-    -- add to the server on_attach function
-    -- on_attach = function(client, bufnr)
-    -- end,
-
-    -- override the lsp installer server-registration function
-    -- server_registration = function(server, opts)
-    --   require("lspconfig")[server].setup(opts)
-    -- end,
-
-    -- Add overrides for LSP server settings, the keys are the name of the server
-    ["server-settings"] = {
-      -- example for addings schemas to yamlls
-      -- yamlls = {
-      --   settings = {
-      --     yaml = {
-      --       schemas = {
-      --         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
-      --         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-      --         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
-      --       },
-      --     },
-      --   },
-      -- },
-    },
-  },
-
-  -- Diagnostics configuration (for vim.diagnostics.config({}))
   diagnostics = {
     virtual_text = true,
     underline = true,
@@ -186,8 +187,6 @@ local config = {
   -- This function is run last
   -- good place to configuring augroups/autocommands and custom filetypes
   polish = function()
-    -- Set key binding
-    -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePost", {
       desc = "Sync packer after modifying plugins.lua",
@@ -195,19 +194,6 @@ local config = {
       pattern = "plugins.lua",
       command = "source <afile> | PackerSync",
     })
-
-    -- Set up custom filetypes
-    -- vim.filetype.add {
-    --   extension = {
-    --     foo = "fooscript",
-    --   },
-    --   filename = {
-    --     ["Foofile"] = "fooscript",
-    --   },
-    --   pattern = {
-    --     ["~/%.config/foo/.*"] = "fooscript",
-    --   },
-    -- }
   end,
 }
 
