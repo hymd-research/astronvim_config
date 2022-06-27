@@ -101,6 +101,36 @@ local config = {
         config = function()
           require("hlslens").setup()
         end
+      },
+      {
+        "simrat39/rust-tools.nvim",
+        config = function()
+          require("rust-tools").setup({
+            tools = {
+              executor = require("rust-tools.executors").termopen,
+              hover_actions = {
+                auto_focus = true,
+                border = {
+                  { "╭", "FloatBorder" },
+                  { "─", "FloatBorder" },
+                  { "╮", "FloatBorder" },
+                  { "│", "FloatBorder" },
+                  { "╯", "FloatBorder" },
+                  { "─", "FloatBorder" },
+                  { "╰", "FloatBorder" },
+                  { "│", "FloatBorder" },
+                },
+              },
+            },
+            dap = {
+              adapter = {
+                type = "executable",
+                command = "lldb-vscode",
+                name = "rt_lldb",
+              },
+            },
+          })
+        end
       }
     },
     ["presence"] = {
@@ -169,6 +199,9 @@ local config = {
       compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
     },
     telescope = {
+      defaults = {
+        prompt_prefix=' ',
+      },
       extensions = {
         ["ui-select"] = {
           require("telescope.themes").get_dropdown({ winblend = 3 })
