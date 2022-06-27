@@ -1,3 +1,8 @@
+local telescope = require("telescope")
+telescope.load_extension("ui-select")
+telescope.load_extension("dap")
+telescope.load_extension("neoclip")
+
 local config = {
 
   updater = {
@@ -35,11 +40,37 @@ local config = {
   plugins = {
     init = {
       { "andweeb/presence.nvim" },
+      { "mrjones2014/legendary.nvim" },
       { "mfussenegger/nvim-dap" },
+      {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+          require("dapui").setup()
+        end
+      },
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        config = function()
+          require("nvim-dap-virtual-text").setup()
+        end
+      },
+      { "andymass/vim-matchup" },
       {
         "ray-x/cmp-treesitter",
         config = function()
           astronvim.add_user_cmp_source "treesitter"
+        end
+      },
+      {
+        "folke/lsp-colors.nvim",
+        config = function()
+          require("lsp-colors").setup()
+        end
+      },
+      {
+        "tami5/lspsaga.nvim",
+        config = function()
+          require("lspsaga").setup()
         end
       },
       {
@@ -51,27 +82,26 @@ local config = {
           })
         end,
       },
-      {
-        "nvim-telescope/telescope-ui-select.nvim",
-        config = function()
-          require("telescope").load_extension("ui-select")
-        end
-      },
-      {
-        "nvim-telescope/telescope-dap.nvim",
-        config = function()
-          require("telescope").load_extension("dap")
-        end
-      },
+      { "nvim-telescope/telescope-ui-select.nvim" },
+      { "nvim-telescope/telescope-dap.nvim" },
       {
         "AckslD/nvim-neoclip.lua",
-        requires = {
-          {'nvim-telescope/telescope.nvim'},
-        },
         config = function()
           require('neoclip').setup()
         end,
       },
+      {
+        "petertriho/nvim-scrollbar",
+        config = function()
+          require("scrollbar").setup()
+        end
+      },
+      {
+        "kevinhwang91/nvim-hlslens",
+        config = function()
+          require("hlslens").setup()
+        end
+      }
     },
     ["presence"] = {
       auto_update         = true,
@@ -103,6 +133,7 @@ local config = {
       sources = {
         require("null-ls.builtins").formatting.rufo,
         require("null-ls.builtins").diagnostics.rubocop,
+        require("null-ls.builtins").completion.spell,
       },
       on_attach = function(client)
         if client.resolved_capabilities.document_formatting then
@@ -123,6 +154,11 @@ local config = {
         { name = "path" },
       }
     },
+    ["treesitter.configs"] = {
+      matchup = {
+        enable = true,
+      }
+    },
     ["nvim-lsp-installer"] = {
       ensure_installed = { "sumneko_lua" },
     },
@@ -131,6 +167,13 @@ local config = {
     },
     packer = {
       compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
+    },
+    telescope = {
+      extensions = {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown({ winblend = 3 })
+        }
+      }
     },
   },
 
@@ -155,7 +198,6 @@ local config = {
 
   mappings = {
     n = {
-      ["<C-s>"] = { ":w!<cr>", desc = "Save File" },
     },
     t = {
     },
@@ -170,6 +212,8 @@ local config = {
       command = "source <afile> | PackerSync",
     })
   end,
+
 }
 
 return config
+
