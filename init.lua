@@ -222,25 +222,31 @@ local config = {
 
   mappings = {
     n = {
-      -- ["gh"] = {
-      --   require("lspsaga.finder").lsp_finder,
-      --   desc="Lspsaga lsp_finder",
-      --   { silent = true, noremap=true },
-      -- },
-      -- ["gs"] = {
-      --   require("lspsaga.signaturehelp").signature_help,
-      --   { silent = true, noremap = true },
-      --   desc="Lspsaga signature help"
-      -- },
-      -- ["ca"] = {
-      --   require("lspsaga.codeaction").code_action,
-      --   { silent = true, noremap=true },
-      --   desc="Lspsaga code action"
-      -- },
-      -- ["K"] = {
-      --   require("lspsaga.hover").render_hover_doc,
-      --   desc="Lspsaga hover doc"
-      -- },
+      ["gh"] = {
+        require("lspsaga.finder").lsp_finder,
+        desc="Lspsaga lsp finder",
+      },
+      ["gs"] = {
+        require("lspsaga.signaturehelp").signature_help,
+        desc="Lspsaga signature help"
+      },
+      ["ca"] = {
+        require("lspsaga.codeaction").code_action,
+        desc="Lspsaga code action"
+      },
+      ["gk"] = {
+        require("lspsaga.hover").render_hover_doc,
+        desc="Lspsaga hover doc"
+      },
+    },
+    v = {
+      ["ca"] = {
+        function()
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
+          require("lspsaga.codeaction").range_code_action()
+        end,
+        desc="Lspsaga code action"
+      }
     },
     t = {
     },
