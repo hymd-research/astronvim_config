@@ -1,8 +1,3 @@
-local telescope = require("telescope")
-telescope.load_extension("ui-select")
-telescope.load_extension("dap")
-telescope.load_extension("neoclip")
-
 local config = {
 
   updater = {
@@ -68,9 +63,9 @@ local config = {
         end
       },
       {
-        "tami5/lspsaga.nvim",
+        "glepnir/lspsaga.nvim",
         config = function()
-          require("lspsaga").setup()
+          require("lspsaga").init_lsp_saga()
         end
       },
       {
@@ -82,12 +77,13 @@ local config = {
           })
         end,
       },
-      { "nvim-telescope/telescope-ui-select.nvim" },
-      { "nvim-telescope/telescope-dap.nvim" },
+      {
+        "nvim-telescope/telescope-dap.nvim",
+      },
       {
         "AckslD/nvim-neoclip.lua",
         config = function()
-          require('neoclip').setup()
+          require("neoclip").setup()
         end,
       },
       {
@@ -192,21 +188,16 @@ local config = {
     ["nvim-lsp-installer"] = {
       ensure_installed = { "sumneko_lua" },
     },
-    treesitter = {
+    ["treesitter"] = {
       ensure_installed = { "lua" },
     },
-    packer = {
+    ["packer"] = {
       compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
     },
-    telescope = {
+    ["telescope"] = {
       defaults = {
         prompt_prefix=' ',
       },
-      extensions = {
-        ["ui-select"] = {
-          require("telescope.themes").get_dropdown({ winblend = 3 })
-        }
-      }
     },
   },
 
@@ -231,6 +222,25 @@ local config = {
 
   mappings = {
     n = {
+      -- ["gh"] = {
+      --   require("lspsaga.finder").lsp_finder,
+      --   desc="Lspsaga lsp_finder",
+      --   { silent = true, noremap=true },
+      -- },
+      -- ["gs"] = {
+      --   require("lspsaga.signaturehelp").signature_help,
+      --   { silent = true, noremap = true },
+      --   desc="Lspsaga signature help"
+      -- },
+      -- ["ca"] = {
+      --   require("lspsaga.codeaction").code_action,
+      --   { silent = true, noremap=true },
+      --   desc="Lspsaga code action"
+      -- },
+      -- ["K"] = {
+      --   require("lspsaga.hover").render_hover_doc,
+      --   desc="Lspsaga hover doc"
+      -- },
     },
     t = {
     },
