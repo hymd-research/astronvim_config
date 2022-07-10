@@ -1,2 +1,1 @@
-vim.g.material_style = "oceanic"
-return "material"
+return require "user.plugins.material"

@@ -1,14 +1,5 @@
 return {
   {
-    "marko-cerovac/material.nvim"
-  },
-  {
-    "andweeb/presence.nvim"
-  },
-  {
-    "mrjones2014/legendary.nvim"
-  },
-  {
     "andymass/vim-matchup"
   },
   {
@@ -69,33 +60,12 @@ return {
     end
   },
   {
+    "marko-cerovac/material.nvim",
+  },
+  {
     "simrat39/rust-tools.nvim",
     config = function()
-      require("rust-tools").setup({
-        tools = {
-          executor = require("rust-tools.executors").termopen,
-          hover_actions = {
-            auto_focus = true,
-            border = {
-              { "╭", "FloatBorder" },
-              { "─", "FloatBorder" },
-              { "╮", "FloatBorder" },
-              { "│", "FloatBorder" },
-              { "╯", "FloatBorder" },
-              { "─", "FloatBorder" },
-              { "╰", "FloatBorder" },
-              { "│", "FloatBorder" },
-            },
-          },
-        },
-        dap = {
-          adapter = {
-            type = "executable",
-            command = "lldb-vscode",
-            name = "rt_lldb",
-          },
-        },
-      })
+      require "user.plugins.rust-tools"
     end
   }
 }
