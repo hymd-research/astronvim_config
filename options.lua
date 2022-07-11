@@ -2,6 +2,7 @@ return {
   opt = {
     autoindent = true,
     completeopt = { "menu", "menuone", "noselect" },
+    cursorline = true,
     diffopt = { 'internal', 'filler', 'closeoff', 'vertical' },
     incsearch = true,
     relativenumber = true,
