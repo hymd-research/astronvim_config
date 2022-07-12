@@ -11,5 +11,6 @@ return {
   },
   g = {
     mapleader = " ",
+    material_style = "oceanic"
   },
 }

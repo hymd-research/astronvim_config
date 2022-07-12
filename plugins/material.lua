@@ -2,7 +2,6 @@ local status, material = pcall(require, "material")
 if not status then
 	return "default_theme"
 else
-	vim.g.material_style = "oceanic"
 	material.setup({
 		contrast = {
 			sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )

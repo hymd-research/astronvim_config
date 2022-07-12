@@ -21,10 +21,7 @@ return {
     "nvim-telescope/telescope-dap.nvim",
   },
   {
-    "ray-x/cmp-treesitter",
-    config = function()
-      astronvim.add_user_cmp_source "treesitter"
-    end
+    "ray-x/cmp-treesitter"
   },
   {
     "folke/lsp-colors.nvim",
