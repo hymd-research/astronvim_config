@@ -1,9 +1,7 @@
 return {
   ensure_installed = {
+    "fish",
     "lua",
-    "hcl",
-    "haskell",
-    "rust",
   },
   configs = {
     matchup = {
